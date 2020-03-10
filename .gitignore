@@ -1,0 +1,5 @@
+# copied from the consuming project
+/docker-compose.override.yml
+# optional symlinks if the container is not used
+/jsconfig.json
+/.editorconfig

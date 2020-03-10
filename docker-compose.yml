@@ -1,0 +1,29 @@
+version: "3.6"
+services:
+  app:
+    build:
+      context: .
+      target: development
+    command: [
+      "npx", "http-server", "-S",
+      "-C", "/home/node/certificates/localhost.crt",
+      "-K", "/home/node/certificates/localhost.key"
+    ]
+    environment:
+      - ENV=/home/node/shell/ash.sh
+      - PROJECT=node.js
+    ports:
+      - "8443:8080"
+    tty: true
+    volumes:
+      - certificates:/home/node/certificates
+      - shell:/home/node/shell
+      - ./config:/home/node/config
+      - ./public:/home/node/app/public
+      - ./script:/home/node/app/script
+    working_dir: /home/node/app
+volumes:
+  certificates:
+    external: true
+  shell:
+    external: true

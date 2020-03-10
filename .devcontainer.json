@@ -1,0 +1,17 @@
+{
+  "name": "Node.js",
+  "dockerComposeFile": [
+    "./docker-compose.yml",
+    "./docker-compose.override.yml"
+  ]
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig",
+    "shinnn.stylelint"
+  ],
+  "service": "app",
+  "settings": {
+  },
+  "shutdownAction": "stopCompose",
+  "workspaceFolder": "/home/node/app"
+}

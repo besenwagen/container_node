@@ -4,13 +4,12 @@ services:
     build:
       context: .
       target: development
-    command: [
-      "npx", "http-server", "-S",
-      "-C", "/home/node/certificates/localhost.crt",
-      "-K", "/home/node/certificates/localhost.key"
-    ]
+    command: ["node", "./script/server.js"]
     environment:
+      - CERT=/home/node/certificates
       - ENV=/home/node/shell/ash.sh
+      - HOST=localhost
+      - PORT=8080
       - PROJECT=node.js
     ports:
       - "8443:8080"

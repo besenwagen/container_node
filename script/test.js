@@ -4,10 +4,9 @@
  * `test` and `test-io` modules first from the network,
  * since Node currently only supports `file://` URLs.
  */
-
 import { promisify } from 'util';
 import glob from 'glob';
-import { failing, load, printReport } from '../public/test-io.js';
+import { failing, load, printReport } from 'file:///home/node/app/public/test-io.js';
 
 /* global process */
 

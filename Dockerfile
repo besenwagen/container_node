@@ -1,4 +1,4 @@
-FROM node:13-alpine AS update
+FROM node:14-alpine AS update
 RUN npm install\
  --global\
  --loglevel error\

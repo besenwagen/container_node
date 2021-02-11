@@ -10,11 +10,11 @@ const {
   PORT,
 } = env;
 
-const read = extension =>
-  readFileSync(`${CERT}/${HOST}.${extension}`);
+const read = type =>
+  readFileSync(`${CERT}/${HOST}-${type}.pem`);
 
 const options = {
-  cert: read('crt'),
+  cert: read('cert'),
   key: read('key'),
 };
 

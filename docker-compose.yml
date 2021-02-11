@@ -1,10 +1,11 @@
 version: "3.6"
 services:
-  app:
+  node:
     build:
       context: .
       target: development
     command: ["node", "./script/server.js"]
+    container_name: node
     environment:
       - CERT=/home/node/certificates
       - ENV=/home/node/shell/ash.sh
@@ -18,9 +19,9 @@ services:
       - certificates:/home/node/certificates
       - shell:/home/node/shell
       - ./config:/home/node/config
-      - ./public:/home/node/app/public
-      - ./script:/home/node/app/script
-    working_dir: /home/node/app
+      - ./public:/home/node/workspace/public
+      - ./script:/home/node/workspace/script
+    working_dir: /home/node/workspace
 volumes:
   certificates:
     external: true

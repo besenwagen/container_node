@@ -8,9 +8,9 @@ FROM update AS layout
 USER node
 WORKDIR /home/node
 COPY --chown=node:node ./config ./config
-RUN mkdir -p ./app/public
-COPY --chown=node:node ./public ./app/public
-WORKDIR ./app
+RUN mkdir -p ./workspace/public
+COPY --chown=node:node ./public ./workspace/public
+WORKDIR ./workspace
 
 FROM layout AS config
 RUN for FILE in ../config/*;\

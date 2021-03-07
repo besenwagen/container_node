@@ -9,7 +9,7 @@
     "editorconfig.editorconfig",
     "shinnn.stylelint"
   ],
-  "service": "app",
+  "service": "node",
   "settings": {
   },
   "shutdownAction": "stopCompose",

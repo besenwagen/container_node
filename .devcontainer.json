@@ -10,8 +10,7 @@
     "shinnn.stylelint"
   ],
   "service": "node",
-  "settings": {
-  },
+  "settings": {},
   "shutdownAction": "stopCompose",
-  "workspaceFolder": "/home/node/app"
+  "workspaceFolder": "/home/node/workspace"
 }

@@ -4,7 +4,20 @@
   "eslintConfig": {
     "extends": "@eric.bednarz.dev",
     "rules": {
-      "camelcase": "off"
+      "camelcase": "off",
+      "max-len": [
+        "error",
+        {
+          "code": 72,
+          "ignoreRegExpLiterals": true,
+          "ignoreStrings": true,
+          "ignoreUrls": true
+        }
+      ],
+      "max-statements": [
+        "error",
+        7
+      ]
     },
     "ignorePatterns": [
       "**/example/**/*.js"

@@ -1,10 +1,10 @@
-import rollupModule from 'rollup';
+import { rollup } from 'rollup';
+import { terser } from "rollup-plugin-terser";
 import urlResolve from 'rollup-plugin-url-resolve';
 import prettier from 'rollup-plugin-prettier';
 
 /* global process */
 
-const { rollup } = rollupModule;
 const EXIT_CODE_ERROR = 1;
 const {
   argv: [, , input, file],
@@ -30,12 +30,13 @@ const inputOptions = {
   input,
   plugins: [
     urlResolve(),
-    prettier({
-      parser: 'babel',
-      printWidth: 72,
-      singleQuote: true,
-      trailingComma: 'es5',
-    }),
+    terser(),
+    // prettier({
+    //   parser: 'babel',
+    //   printWidth: 72,
+    //   singleQuote: true,
+    //   trailingComma: 'es5',
+    // }),
   ],
 };
 

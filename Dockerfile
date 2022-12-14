@@ -1,16 +1,19 @@
-FROM node:14-alpine AS update
+ARG NODE_HOME=/home/node
+
+FROM node:18-alpine AS update
 RUN npm install\
  --global\
  --loglevel error\
- npm@6
+ npm@9
 
 FROM update AS layout
+ARG NODE_HOME
 USER node
-WORKDIR /home/node
+WORKDIR ${NODE_HOME}
 COPY --chown=node:node ./config ./config
 RUN mkdir -p ./workspace/public
 COPY --chown=node:node ./public ./workspace/public
-WORKDIR ./workspace
+WORKDIR ${NODE_HOME}/workspace
 
 FROM layout AS config
 RUN for FILE in ../config/*;\

@@ -16,10 +16,8 @@ COPY --chown=node:node ./public ./workspace/public
 WORKDIR ${NODE_HOME}/workspace
 
 FROM layout AS config
-RUN for FILE in ../config/*;\
- do ln -s $FILE ./;\
- done &&\
- for FILE in ../config/.[!.]*;\
+RUN FROM=../config;\
+ for FILE in ${FROM}/* ${FROM}/.[!.]*;\
  do ln -s $FILE ./;\
  done
 

@@ -17,36 +17,36 @@ const find = promisify(glob);
 const pattern = 'public/*.test.js';
 
 const toFileUrl = file =>
-  `file://${cwd()}/${file}`;
+	`file://${cwd()}/${file}`;
 
 const map = files =>
-  files
-    .map(toFileUrl);
+	files
+		.map(toFileUrl);
 
 function getReportArguments(result, errors) {
-  if (errors) {
-    return ['failing', failing(result)];
-  }
+	if (errors) {
+		return ['failing', failing(result)];
+	}
 
-  return ['result', result];
+	return ['result', result];
 }
 
 function resolved([result, [, , errors]]) {
-  if (verbose) {
-    const argumentList = getReportArguments(result, errors);
+	if (verbose) {
+		const argumentList = getReportArguments(result, errors);
 
-    printReport(...argumentList);
-  } else {
-    console.info('# see the complete report by using the -v option');
-  }
+		printReport(...argumentList);
+	} else {
+		console.info('# see the complete report by using the -v option');
+	}
 }
 
 function rejected(reason) {
-  console.error(reason);
+	console.error(reason);
 }
 
 find(pattern)
-  .then(map)
-  .then(load)
-  .then(resolved)
-  .catch(rejected);
+	.then(map)
+	.then(load)
+	.then(resolved)
+	.catch(rejected);

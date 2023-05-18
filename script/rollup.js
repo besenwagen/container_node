@@ -1,57 +1,103 @@
+export { build };
+
 import { rollup } from 'rollup';
-import { terser } from "rollup-plugin-terser";
-import urlResolve from 'rollup-plugin-url-resolve';
+import terser from '@rollup/plugin-terser';
 import prettier from 'rollup-plugin-prettier';
+import url_resolve from 'rollup-plugin-url-resolve';
 
-/* global process */
+const { assign, create } = Object;
 
-const EXIT_CODE_ERROR = 1;
-const {
-  argv: [, , input, file],
-  exit,
-} = process;
+function dictionary(entries) {
+	const bucket = create(null);
 
-if (!input || !file) {
-  console.error('missing arguments');
-  exit(EXIT_CODE_ERROR);
+	if (entries) {
+		return assign(bucket, entries);
+	}
+
+	return bucket;
 }
 
-const timestamp = new Date().toISOString();
-const info = `Dependency modules bundle @${timestamp}`;
-const { length } = info;
-const banner = `
-/**${'*'.repeat(length)}**
- * ${info} *
- **${'*'.repeat(length)}**/
+const banner = '/* Debug bundle */ /* eslint-disable */\n';
 
-`.trimLeft();
-
-const inputOptions = {
-  input,
-  plugins: [
-    urlResolve(),
-    terser(),
-    // prettier({
-    //   parser: 'babel',
-    //   printWidth: 72,
-    //   singleQuote: true,
-    //   trailingComma: 'es5',
-    // }),
-  ],
+const prettier_options = {
+	parser: 'babel',
+	printWidth: 72,
+	singleQuote: true,
+	trailingComma: 'es5',
+	useTabs: true,
 };
 
-const outputOptions = {
-  banner,
-  file,
-  format: 'esm',
-};
+function parse_input_options(debug, path) {
+	if (debug) {
+		return [
+			[
+				new RegExp(`^${path}/[^/]+/.+\\.js$`),
+			],
+			prettier(prettier_options),
+		];
+	}
 
-async function build() {
-  const bundle = await rollup(inputOptions);
-
-  await bundle.write(outputOptions);
-
-  console.info('Done');
+	return [
+		null,
+		terser(),
+	];
 }
 
-build();
+function get_input_options({
+	debug,
+	asset,
+	path,
+}) {
+	const [external, plugin] = parse_input_options(debug, path);
+
+	return dictionary({
+		input: `./public/script/${asset}.js`,
+		external,
+		plugins: [
+			url_resolve({
+				cacheManager: '.cache',
+			}),
+			plugin,
+		],
+	});
+}
+
+function get_output_options({ debug }) {
+	const index = Number(!debug);
+
+	return dictionary({
+		banner,
+		format: 'esm',
+		manualChunks(id) {
+			if (id.endsWith(`/public/script/vendor.js`)) {
+				return 'vendor';
+			}
+		},
+		chunkFileNames: [
+			'[name]-bundle.js',
+			'[name]-[hash].js',
+		][index],
+		dir: [
+			'public/script',
+			'public',
+		][index],
+		entryFileNames: [
+			'[name]-bundle.js',
+			'[name]-[hash].js',
+		][index],
+	});
+}
+
+const to_file_map = (accumulator, { name, fileName }) =>
+	assign(accumulator, {
+		[name]: fileName,
+	});
+
+async function build(options) {
+	const input_options = get_input_options(options);
+	const output_options = get_output_options(options);
+	const bundled = await rollup(input_options);
+	const { output } = await bundled.write(output_options);
+
+	return output.reduce(to_file_map, dictionary());
+}

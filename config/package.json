@@ -28,6 +28,6 @@
     "rollup-plugin-prettier": "^3.0.0",
     "rollup-plugin-url-resolve": "^0.2.0",
     "serve-static": "^1.14.1",
-    "stylelint": "^15.6.2"
+    "stylelint": "^15.10.1"
   }
 }
